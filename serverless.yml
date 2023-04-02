@@ -1,0 +1,25 @@
+service: slack-gpt
+frameworkVersion: '3'
+
+# Settings for Serverless Dashboard
+org: pandy
+app: slack-gpt
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  environment:
+    SLACK_OAUTH_TOKEN: ${param:SLACK_OAUTH_TOKEN}
+    SLACK_SIGNING_SECRET: ${param:SLACK_SIGNING_SECRET}
+    OPENAI_API_KEY: ${param:OPENAI_API_KEY}
+
+functions:
+  hello:
+    handler: src/handler.handler
+    events:
+      - httpApi:
+          path: /slack/events
+          method: post
+
+plugins:
+  - serverless-plugin-typescript
